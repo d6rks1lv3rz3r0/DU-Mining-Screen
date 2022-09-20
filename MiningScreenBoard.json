@@ -1,0 +1,144 @@
+{
+    "slots": {
+        "0": {
+            "name": "Screen",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "1": {
+            "name": "Container",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "2": {
+            "name": "MiningUnit1",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "3": {
+            "name": "MiningUnit2",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "4": {
+            "name": "MiningUnit3",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "5": {
+            "name": "MiningUnit4",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "6": {
+            "name": "MiningUnit5",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "7": {
+            "name": "MiningUnit6",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "8": {
+            "name": "MiningUnit7",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "9": {
+            "name": "MiningUnit8",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "-1": {
+            "name": "unit",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "-3": {
+            "name": "player",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "-2": {
+            "name": "construct",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "-4": {
+            "name": "system",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        },
+        "-5": {
+            "name": "library",
+            "type": {
+                "events": [],
+                "methods": []
+            }
+        }
+    },
+    "handlers": [
+        {
+            "code": "-- Converts \"if variable\" to 1,0 for easier checking.\nfunction exists(var)\n    if var then check=1 else check=0 end\n    return check\nend\n\n-- Converts boolean to 1,0 for easier checking.\nboolTonumber={[true]=1,[false]=0}\n\n-- Rounds \nfunction round(num, numDecimalPlaces)\n  local mult = 10^(numDecimalPlaces or 0)\n  return math.floor(num * mult + 0.5) / mult\nend\n\n-- Update Screen \nfunction UpdateScreen()\n    ContainerContentMass = round(Container.getItemsMass())\n    ContainerContentVol = round(Container.getItemsVolume())\n    ContainerContentMaxVol = round(Container.getMaxVolume())\n    \n    ConstructPos = construct.getWorldPosition();\n    ConstructPosString = math.ceil(ConstructPos[1]) .. ',' \n    .. math.ceil(ConstructPos[2]) .. ',' .. math.ceil(ConstructPos[3])\n    \n    AcquiredTime = system.getArkTime()\n\n    Header = tostring(NMUs) .. '$' .. tostring(ContainerContentMass) .. \n    '$' .. tostring(ContainerContentVol) .. '$' .. tostring(ContainerContentMaxVol) .. '$' .. \n    construct.getName() .. '$' .. boolTonumber[ReplaceGreenWithBlue] .. '$' .. \n    boolTonumber[ReplaceRedWithBlue] .. '$' .. ConstructPosString .. '$' .. AcquiredTime\n\n    Data = ''\n    for ii = 1,NMUs do\n\n        MiningUnit = MiningUnits[ii]\n\n        State = MiningUnit.getState()\n        OreID = MiningUnit.getActiveOre()\n        OreInfo = system.getItem(OreID)\n        BaseRate = MiningUnit.getBaseRate()\n        Efficiency = MiningUnit.getEfficiency()\n        Adjacency = MiningUnit.getAdjacencyBonus()\n\n        CalibrationRate = MiningUnit.getCalibrationRate()\n\n        if UseOptimalRate then\n            OptimalRate = MiningUnit.getOptimalRate()\n        else\n            OptimalRate = RateThreshold\n        end\n\n        ProductionRate = MiningUnit.getProductionRate()\n\n        Cooldown = MiningUnit.getLastExtractionTime()    \n        Position = MiningUnit.getLastExtractionPosition()\n\n        CurrentMUStats = tostring(State) .. '$' .. OreID .. '$' .. tostring(BaseRate) .. '$' ..\n        tostring(Efficiency) .. '$' .. tostring(Adjacency) .. '$' .. tostring(CalibrationRate) ..\n        '$' .. tostring(OptimalRate) .. '$' .. tostring(ProductionRate) .. '$' .. tostring(Cooldown) .. \n        '$' .. tostring(Position[1]) .. ',' .. tostring(Position[2]) .. ',' .. tostring(Position[3])\n\n        Data = Data .. '#' .. CurrentMUStats\n\n    end\n\n    Message = Header .. \"&\" .. Data \n    Screen.setScriptInput(Message)\nend\n\n-- Parameters --\nUseOptimalRate = false --export: Toggle to Use Reported Optimal Rates for Calibration Times\nRateThreshold = 0.50 --export: Alternative Threshold Rate to be Used for Calibration Times\nReplaceGreenWithBlue = false --export: Colorblind Option I\nReplaceRedWithBlue = false --export: Colorblind Option II\n\nScreen.setScriptInput('')\n\nNMUs = exists(MiningUnit1)+exists(MiningUnit2)+exists(MiningUnit3)+exists(MiningUnit4)\n+exists(MiningUnit5)+exists(MiningUnit6)+exists(MiningUnit7)+exists(MiningUnit8)\n\nMiningUnits = {MiningUnit1,MiningUnit2,MiningUnit3,MiningUnit4,\n    MiningUnit5,MiningUnit6,MiningUnit7,MiningUnit8}\n\nScreen.activate()\n\nUpdateScreen()\nunit.setTimer('Update',3)\n\n",
+            "filter": {
+                "args": [],
+                "signature": "onStart()",
+                "slotKey": "-1"
+            },
+            "key": "0"
+        },
+        {
+            "code": "Screen.deactivate()\n\n",
+            "filter": {
+                "args": [],
+                "signature": "onStop()",
+                "slotKey": "-1"
+            },
+            "key": "1"
+        },
+        {
+            "code": "UpdateScreen()",
+            "filter": {
+                "args": [
+                    {
+                        "value": "Update"
+                    }
+                ],
+                "signature": "onTimer(tag)",
+                "slotKey": "-1"
+            },
+            "key": "2"
+        }
+    ],
+    "methods": [],
+    "events": []
+}
