@@ -861,7 +861,7 @@ for i ,v in ipairs(DataTable) do
     if CalibrationMargin > 0 then
         CalibTimes[i] = (3-math.min(tonumber(v.Cooldown)/60/60/24 ,3)) + CalibrationMargin/0.15             
     else
-        CalibTimes[i] = CDTimes[i]  
+        CalibTimes[i] = CDTimes[i]/24  
     end
 end
 
