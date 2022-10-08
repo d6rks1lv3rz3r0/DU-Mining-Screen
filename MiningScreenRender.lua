@@ -646,11 +646,11 @@ function HorizontalGauge(layer,font,Data,Mass,Vol,X,Y,SX,SY,n,r,g,b,CalibrationT
     
     setNextTextAlign(layer, AlignH_Right, AlignV_Middle)
     setNextFillColor(layer, r, g, b, 1)
-    addText(layer, font, string.format("%.1f",Vol) .. "t", X + SX/2 + 25*vh, Y)
+    addText(layer, font, string.format("%.1f",Vol) .. "kL", X + SX/2 + 25*vh, Y)
     
     setNextTextAlign(layer, AlignH_Right, AlignV_Middle)
     setNextFillColor(layer, r, g, b, 1)
-    addText(layer, font, string.format("%.1f",Mass) .. "kL", X + SX/2 + 39*vh, Y)
+    addText(layer, font, string.format("%.1f",Mass) .. "t", X + SX/2 + 39*vh, Y)
     
     -- Icon -- 
     
