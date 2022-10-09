@@ -889,7 +889,7 @@ if DataTable ~= {} and DataTable[1] ~= nil then
         ProdText = ProdText .. "#" .. k .. "$" .. round(v,1)
     end
 
-    MessageOut = round(StorageTime,2) .. "$" .. Vol .. "$" .. Mass .. "$" .. round(CalibrationTime,2) .. "$" .. round(CDTime) .. "$" .. ConstructName ..
+    MessageOut = round(StorageTime,2) .. "$" .. Vol .. "$" .. Mass .. "$" .. round(CalibrationTime,2) .. "$" .. round(CDTime,2) .. "$" .. ConstructName ..
     "$" .. ConstructPos .. "$" .. AcquiredTime .. "$" .. ConstructID .. "&" .. ProdText
 
     if not LocationMessageWillBeSent then
