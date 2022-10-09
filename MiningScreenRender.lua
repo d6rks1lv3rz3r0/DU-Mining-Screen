@@ -798,8 +798,8 @@ if Payload ~= nil and Payload ~= '' then
     Vol = tonumber(Info[3])
     MaxVol = tonumber(Info[4])
     ConstructName = Info[5]
-    RColorblind = tonumber(Info[6])
-    GColorblind = tonumber(Info[7])
+    GColorblind = tonumber(Info[6])
+    RColorblind = tonumber(Info[7])
     ConstructPos = Info[8]
     AcquiredTime = Info[9]
     ConstructID = Info[10]
@@ -890,7 +890,7 @@ if DataTable ~= {} and DataTable[1] ~= nil then
     end
 
     MessageOut = round(StorageTime,2) .. "$" .. Vol .. "$" .. Mass .. "$" .. round(CalibrationTime,2) .. "$" .. round(CDTime) .. "$" .. ConstructName ..
-    "$" .. ConstructPos .. "$" .. AcquiredTime .. "&" .. ConstructID .. "&" .. ProdText
+    "$" .. ConstructPos .. "$" .. AcquiredTime .. "$" .. ConstructID .. "&" .. ProdText
 
     if not LocationMessageWillBeSent then
         setOutput(MessageOut)
