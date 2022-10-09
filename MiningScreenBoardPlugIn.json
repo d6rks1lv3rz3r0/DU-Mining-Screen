@@ -121,7 +121,7 @@
             "key": "0"
         },
         {
-            "code": "function mysplit(inputstr, sep)\n    if sep == nil then\n        sep = \"%s\"\n    end\n    local t={}\n    for str in string.gmatch(inputstr, \"([^\"..sep..\"]+)\") do\n        table.insert(t, str)\n    end\n    return t\nend\n\nunit.setTimer('Emit',1)\n\n",
+            "code": "function mysplit(inputstr, sep)\n    if sep == nil then\n        sep = \"%s\"\n    end\n    local t={}\n    for str in string.gmatch(inputstr, \"([^\"..sep..\"]+)\") do\n        table.insert(t, str)\n    end\n    return t\nend\n\n",
             "filter": {
                 "args": [],
                 "signature": "onStart()",

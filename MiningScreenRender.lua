@@ -605,6 +605,9 @@ function HorizontalGauge(layer,font,Data,Mass,Vol,X,Y,SX,SY,n,r,g,b,CalibrationT
 
     local Height = math.ceil(Data/(100/n))
 
+    setDefaultStrokeColor(layer,Shape_Polygon,0,0,0,0)
+    setDefaultShadow(layer,Shape_Polygon,0,0,0,0,0)
+    
     for jj = 1,Height,1 do
         setNextFillColor(layer,r,g,b,0.2+(jj^3)*(0.4/(Height^3)))
         addQuad(layer,
@@ -799,6 +802,7 @@ if Payload ~= nil and Payload ~= '' then
     GColorblind = tonumber(Info[7])
     ConstructPos = Info[8]
     AcquiredTime = Info[9]
+    ConstructID = Info[10]
        
     if PayloadType[2] ~= nil and PayloadType[2] ~= '' then
         
@@ -825,68 +829,73 @@ if Payload ~= nil and Payload ~= '' then
 end
 
 Background(Logo,Aura0,Aura1)
-
-counter = 0
-for ii = 1,2 do
-    for jj = 1,4 do
-        
-        counter = counter + 1
-        
-        if counter <= NMUs then
-        
-            DrawMiningUnitCard(Top,Front,Center,Back,Font,30*vw + (ii-1)*27.5*vw,15*vh + (jj-1)*20*vh, DataTable[counter])    
-            
-        end
-        
-    end
-end
-
-local Productions = {}
-local TotalProduction = 0
-local CalibTimes = {}
-local CDTimes = {}
-
-for i ,v in ipairs(DataTable) do
-    
-    if Productions[v.OreID] then 
-        Productions[v.OreID] = Productions[v.OreID] + tonumber(v.ProductionRate)
-    else
-        Productions[v.OreID] = tonumber(v.ProductionRate)
-    end
-    
-    TotalProduction = TotalProduction + tonumber(v.ProductionRate)
-    
-    CalibrationMargin = tonumber(v.CalibrationRate)-tonumber(v.OptimalRate)
-    CDTimes[i] = (86400-tonumber(v.Cooldown))/60/60
-    if CalibrationMargin > 0 then
-        CalibTimes[i] = (3-math.min(tonumber(v.Cooldown)/60/60/24 ,3)) + CalibrationMargin/0.15             
-    else
-        CalibTimes[i] = CDTimes[i]/24  
-    end
-end
-
-StorageTime = (MaxVol - Vol)/TotalProduction
-
-table.sort(CalibTimes)
-CalibrationTime = CalibTimes[1]
-
-table.sort(CDTimes)
-CDTime = CDTimes[1]
-
-HorizontalGauge(Front,Font,100*Vol/MaxVol,Mass/1000,Vol/1000,79.5*vh,90*vh,15*vw,5*vh,20,0.75,0.75,0.1,CalibrationTime,StorageTime)
 DrawMiningUnitProfile15Degrees(Front,Center,Back,89*vw,11*vh,1)
 DrawMiningUnitProfile15Degrees(Front,Center,Back,11*vw,11*vh,0)
 
-ProdText = ''
-for k,v in pairs(Productions) do
-    ProdText = ProdText .. "#" .. k .. "$" .. round(v,1)
-end
+if DataTable ~= {} and DataTable[1] ~= nil then
 
-MessageOut = round(StorageTime,2) .. "$" .. Vol .. "$" .. Mass .. "$" .. round(CalibrationTime,2) .. "$" .. round(CDTime) .. "$" .. ConstructName ..
- "$" .. ConstructPos .. "$" .. AcquiredTime .. "&" .. ProdText 
+    counter = 0
+    for ii = 1,2 do
+        for jj = 1,4 do
 
-if not LocationMessageWillBeSent then
-    setOutput(MessageOut)
+            counter = counter + 1
+
+            if counter <= NMUs then
+
+                DrawMiningUnitCard(Top,Front,Center,Back,Font,30*vw + (ii-1)*27.5*vw,15*vh + (jj-1)*20*vh, DataTable[counter])    
+
+            end
+
+        end
+    end
+
+    local Productions = {}
+    local TotalProduction = 0
+    local CalibTimes = {}
+    local CDTimes = {}
+
+    for i ,v in ipairs(DataTable) do
+
+        if Productions[v.OreID] then 
+            Productions[v.OreID] = Productions[v.OreID] + tonumber(v.ProductionRate)
+        else
+            Productions[v.OreID] = tonumber(v.ProductionRate)
+        end
+
+        TotalProduction = TotalProduction + tonumber(v.ProductionRate)
+
+        CalibrationMargin = tonumber(v.CalibrationRate)-tonumber(v.OptimalRate)
+        CDTimes[i] = (86400-tonumber(v.Cooldown))/60/60
+        if CalibrationMargin > 0 then
+            CalibTimes[i] = (3-math.min(tonumber(v.Cooldown)/60/60/24 ,3)) + CalibrationMargin/0.15             
+        else
+            CalibTimes[i] = CDTimes[i]/24  
+        end
+    end
+
+    StorageTime = (MaxVol - Vol)/TotalProduction
+
+    table.sort(CalibTimes)
+    CalibrationTime = CalibTimes[1]
+
+    table.sort(CDTimes)
+    CDTime = CDTimes[1]
+
+    HorizontalGauge(Front,Font,100*Vol/MaxVol,Mass/1000,Vol/1000,79.5*vh,90*vh,15*vw,5*vh,20,0.75,0.75,0.1,CalibrationTime,StorageTime)
+
+
+    ProdText = ''
+    for k,v in pairs(Productions) do
+        ProdText = ProdText .. "#" .. k .. "$" .. round(v,1)
+    end
+
+    MessageOut = round(StorageTime,2) .. "$" .. Vol .. "$" .. Mass .. "$" .. round(CalibrationTime,2) .. "$" .. round(CDTime) .. "$" .. ConstructName ..
+    "$" .. ConstructPos .. "$" .. AcquiredTime .. "&" .. ConstructID .. "&" .. ProdText
+
+    if not LocationMessageWillBeSent then
+        setOutput(MessageOut)
+    end
+
 end
 
 requestAnimationFrame(1)
