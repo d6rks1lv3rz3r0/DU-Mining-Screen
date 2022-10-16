@@ -5,8 +5,6 @@
 Helps manage Mining Units in Dual Universe.
 
 # Features
-
-## Mining Screen - Basic
 - Displays stats of up to 7 Mining Units and Storage
 - Options to define a threshold for calibration percentage either through game reported optimal values or personal preference (Default: 50%).
 - Display Guide:
