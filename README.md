@@ -19,7 +19,7 @@ o Emitter (for Aggregator)
 
 # Installation
 
-Video Guide: https://www.youtube.com/watch?v=Y7PUd3AL0AI
+Video Guide: https://www.youtube.com/watch?v=6Q4ctlcbYGA
 
 There are several stages of installation depending on the functionality required:
 1) Place a Programming Board and a Screen in a visible location.
